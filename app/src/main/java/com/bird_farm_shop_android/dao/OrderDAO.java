@@ -19,8 +19,9 @@ public class OrderDAO {
         try {
             con = DBUltils.getConnection();
             if (con != null) {
-                String orderSql = "INSERT INTO ORDER (CUSTOMER_ID, CUSTOMER_NAME, CUSTOMER_PHONE, CUSTOMER_ADDRESS, " +
-                        "TOTAL_PRICE, ORDER_DATE, ORDER_STATUS) VALUES (?, ?, ?, ?, ?, ?, ?)";
+                Log.e("LOG", "THIS IS CREATE ORDER METHOD INSIDE HERRE");
+                String orderSql = "INSERT INTO [ORDER] (CUSTOMER_ID, CUSTOMER_NAME, CUSTOMER_PHONE, CUSTOMER_ADDRESS, " +
+                        "TOTAL_PRICE, ORDER_DATE, ORDER_STATUS, NOTE) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
                 stm = con.prepareStatement(orderSql);
                 stm.setInt(1, order.getCustomerID());
                 stm.setString(2, order.getCustomerName());
@@ -29,6 +30,7 @@ public class OrderDAO {
                 stm.setFloat(5, order.getTotalPrice());
                 stm.setString(6, order.getOrderDate());
                 stm.setString(7, order.getOrderStatus().toString());
+                stm.setString(8, order.getNote());
 
                 int rowsAffected = stm.executeUpdate();
                 if (rowsAffected > 0) {
@@ -57,7 +59,7 @@ public class OrderDAO {
         try {
             Connection con = DBUltils.getConnection();
             if (con != null) {
-                String sql = "SELECT * FROM ORDER";
+                String sql = "SELECT * FROM [ORDER]";
                 PreparedStatement stm = con.prepareStatement(sql);
                 if (stm != null) {
                     ResultSet rs = stm.executeQuery();
@@ -75,14 +77,14 @@ public class OrderDAO {
                             OrderStatus ORDER_STATUS = null;
                             if(status.equals("PENDING")) {
                                 ORDER_STATUS = OrderStatus.PENDING;
-                            }else if(status.equals("CANCLE")) {
-                                ORDER_STATUS = OrderStatus.PENDING;
+                            }else if(status.equals("CANCEL")) {
+                                ORDER_STATUS = OrderStatus.CANCEL;
                             } else {
                                 ORDER_STATUS = OrderStatus.FINISH;
                             }
-                            Order o = new Order(ID, CUSTOMER_ID, NOTE, CUSTOMER_NAME,
-                                    CUSTOMER_PHONE, TOTAL_PRICE, ORDER_DATE,
-                                    ORDER_STATUS
+                            Order o = new Order(ID, CUSTOMER_ID,  CUSTOMER_NAME,
+                                    CUSTOMER_PHONE, CUSTOMER_ADDRESS, TOTAL_PRICE, ORDER_DATE,
+                                    ORDER_STATUS, NOTE
                                     );
 
                             if (orderList == null) {
@@ -108,13 +110,15 @@ public class OrderDAO {
         try {
             Connection con = DBUltils.getConnection();
             if (con != null) {
-                String sql = "SELECT * FROM ORDER WHERE ID = ?";
+                String sql = "SELECT * FROM [ORDER] WHERE ID = ?";
                 PreparedStatement stm = con.prepareStatement(sql);
                 if (stm != null) {
+                    Log.e("ERROR", "THIS IS GET ORDER BY ID INSIDE HERE");
                     stm.setInt(1, orderID);
                     ResultSet rs = stm.executeQuery();
                     if (rs != null) {
                         while (rs.next()) {
+                            Log.e("ERROR", "THIS IS INSERT RESULT SET");
                             Integer ID = rs.getInt("ID");
                             Integer CUSTOMER_ID = rs.getInt("CUSTOMER_ID");
                             String CUSTOMER_NAME = rs.getString("CUSTOMER_NAME");
@@ -123,16 +127,19 @@ public class OrderDAO {
                             Float TOTAL_PRICE = rs.getFloat("TOTAL_PRICE");
                             String ORDER_DATE = rs.getString("ORDER_DATE");
                             String status = rs.getString("ORDER_STATUS");
+                            String NOTE = rs.getString("NOTE");
                             OrderStatus ORDER_STATUS = null;
                             if(status.equals("PENDING")) {
                                 ORDER_STATUS = OrderStatus.PENDING;
-                            }else if(status.equals("CANCLE")) {
-                                ORDER_STATUS = OrderStatus.PENDING;
+                            }else if(status.equals("CANCEL")) {
+                                ORDER_STATUS = OrderStatus.CANCEL;
                             } else {
                                 ORDER_STATUS = OrderStatus.FINISH;
                             }
-                            order = new Order(ID, CUSTOMER_ID, CUSTOMER_NAME, CUSTOMER_PHONE,
-                                    CUSTOMER_ADDRESS, TOTAL_PRICE, ORDER_DATE, ORDER_STATUS);
+                            order = new Order(ID, CUSTOMER_ID,  CUSTOMER_NAME,
+                                    CUSTOMER_PHONE, CUSTOMER_ADDRESS, TOTAL_PRICE, ORDER_DATE,
+                                    ORDER_STATUS, NOTE
+                            );
                         }
                         rs.close();
                     }
@@ -147,12 +154,12 @@ public class OrderDAO {
         }
     }
 
-    public List<Order> getOrderByOrderID(Integer customerID) {
+    public List<Order> getOrderByCustomerID(Integer customerID) {
         List<Order> orderList = null;
         try {
             Connection con = DBUltils.getConnection();
             if (con != null) {
-                String sql = "SELECT * FROM ORDER WHERE CUSTOMER_ID = ?";
+                String sql = "SELECT * FROM [ORDER] WHERE CUSTOMER_ID = ?";
                 PreparedStatement stm = con.prepareStatement(sql);
                 if (stm != null) {
                     stm.setInt(1, customerID);
@@ -167,16 +174,19 @@ public class OrderDAO {
                             Float TOTAL_PRICE = rs.getFloat("TOTAL_PRICE");
                             String ORDER_DATE = rs.getString("ORDER_DATE");
                             String status = rs.getString("ORDER_STATUS");
+                            String NOTE = rs.getString("NOTE");
                             OrderStatus ORDER_STATUS = null;
                             if(status.equals("PENDING")) {
                                 ORDER_STATUS = OrderStatus.PENDING;
-                            }else if(status.equals("CANCLE")) {
-                                ORDER_STATUS = OrderStatus.PENDING;
+                            }else if(status.equals("CANCEL")) {
+                                ORDER_STATUS = OrderStatus.CANCEL;
                             } else {
                                 ORDER_STATUS = OrderStatus.FINISH;
                             }
-                            Order o = new Order(ID, CUSTOMER_ID, CUSTOMER_NAME, CUSTOMER_PHONE, CUSTOMER_ADDRESS,
-                                    TOTAL_PRICE, ORDER_DATE, ORDER_STATUS);
+                            Order o = new Order(ID, CUSTOMER_ID,  CUSTOMER_NAME,
+                                    CUSTOMER_PHONE, CUSTOMER_ADDRESS, TOTAL_PRICE, ORDER_DATE,
+                                    ORDER_STATUS, NOTE
+                            );
 
                             if (orderList == null) {
                                 orderList = new ArrayList<>();
@@ -201,8 +211,8 @@ public class OrderDAO {
         try {
             Connection con = DBUltils.getConnection();
             if (con != null) {
-                String sql = "UPDATE ORDER SET CUSTOMER_NAME=?, CUSTOMER_PHONE=?, CUSTOMER_ADDRESS=?, " +
-                        "TOTAL_PRICE=?, ORDER_DATE=?, ORDER_STATUS=? WHERE ID=?";
+                String sql = "UPDATE [ORDER] SET CUSTOMER_NAME=?, CUSTOMER_PHONE=?, CUSTOMER_ADDRESS=?, " +
+                        "TOTAL_PRICE=?, ORDER_DATE=?, ORDER_STATUS=?, NOTE=? WHERE ID=?";
                 PreparedStatement stm = con.prepareStatement(sql);
                 stm.setString(1, order.getCustomerName());
                 stm.setString(2, order.getCustomerPhone());
@@ -210,7 +220,8 @@ public class OrderDAO {
                 stm.setFloat(4, order.getTotalPrice());
                 stm.setString(5, order.getOrderDate());
                 stm.setString(6, order.getOrderStatus().toString());
-                stm.setInt(7, order.getId());
+                stm.setString(7, order.getNote());
+                stm.setInt(8, order.getId());
 
                 int rowsAffected = stm.executeUpdate();
                 if (rowsAffected > 0) {
@@ -243,7 +254,7 @@ public class OrderDAO {
         try {
             Connection con = DBUltils.getConnection();
             if (con != null) {
-                String sql = "DELETE FROM ORDER WHERE ID=?";
+                String sql = "DELETE FROM [ORDER] WHERE ID=?";
                 PreparedStatement stm = con.prepareStatement(sql);
                 stm.setInt(1, orderID);
 

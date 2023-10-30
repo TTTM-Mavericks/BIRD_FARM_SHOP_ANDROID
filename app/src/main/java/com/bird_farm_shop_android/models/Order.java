@@ -5,7 +5,7 @@ import com.bird_farm_shop_android.enums.OrderStatus;
 public class Order {
     private Integer id;
     private Integer customerID;
-    private String node;
+    private String note;
     private String customerName;
     private String customerPhone;
     private String customerAddress;
@@ -13,12 +13,10 @@ public class Order {
     private String orderDate;
     private OrderStatus orderStatus;
 
-    public Order(Integer id, Integer customerID, String node, String customerName,
-                 String customerPhone, Float totalPrice,
-                 String orderDate, OrderStatus orderStatus) {
-        this.id = id;
+    public Order(Integer customerID, String customerName, String customerPhone,
+                 String customerAddress, Float totalPrice, String orderDate, OrderStatus orderStatus, String note) {
         this.customerID = customerID;
-        this.node = node;
+        this.note = note;
         this.customerName = customerName;
         this.customerPhone = customerPhone;
         this.customerAddress = customerAddress;
@@ -27,10 +25,11 @@ public class Order {
         this.orderStatus = orderStatus;
     }
 
-    public Order(Integer customerID, String node, String customerName, String customerPhone,
-                 String customerAddress, Float totalPrice, String orderDate, OrderStatus orderStatus) {
+    public Order(Integer OrderID, Integer customerID, String customerName, String customerPhone,
+                 String customerAddress, Float totalPrice, String orderDate, OrderStatus orderStatus, String note) {
+        this.id = OrderID;
         this.customerID = customerID;
-        this.node = node;
+        this.note = note;
         this.customerName = customerName;
         this.customerPhone = customerPhone;
         this.customerAddress = customerAddress;
@@ -55,12 +54,12 @@ public class Order {
         this.customerID = customerID;
     }
 
-    public String getNode() {
-        return node;
+    public String getNote() {
+        return note;
     }
 
-    public void setNode(String node) {
-        this.node = node;
+    public void setNote(String note) {
+        this.note = note;
     }
 
     public String getCustomerName() {
@@ -116,7 +115,7 @@ public class Order {
         return "Order{" +
                 "id=" + id +
                 ", customerID=" + customerID +
-                ", node='" + node + '\'' +
+                ", node='" + note + '\'' +
                 ", customerName='" + customerName + '\'' +
                 ", customerPhone='" + customerPhone + '\'' +
                 ", customerAddress='" + customerAddress + '\'' +

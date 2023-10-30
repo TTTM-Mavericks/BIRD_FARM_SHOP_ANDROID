@@ -10,6 +10,13 @@ public class Product {
     private Integer quantity;
     private List<Image> listImages;
 
+    public Product(String productName, Float price, String description, Integer quantity) {
+        this.productName = productName;
+        this.price = price;
+        this.description = description;
+        this.quantity = quantity;
+    }
+
     public Product(Integer productID, String productName, Float price, String description, Integer quantity) {
         this.productID = productID;
         this.productName = productName;
