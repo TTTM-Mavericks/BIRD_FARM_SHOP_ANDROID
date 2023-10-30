@@ -9,9 +9,11 @@ import com.bird_farm_shop_android.dao.BirdDAO;
 import com.bird_farm_shop_android.dao.FoodDAO;
 import com.bird_farm_shop_android.dao.NestDAO;
 import com.bird_farm_shop_android.dao.OrderDAO;
+import com.bird_farm_shop_android.dao.OrderDetailDAO;
 import com.bird_farm_shop_android.dao.UserDAO;
 import com.bird_farm_shop_android.enums.OrderStatus;
 import com.bird_farm_shop_android.models.Order;
+import com.bird_farm_shop_android.models.OrderDetail;
 import com.bird_farm_shop_android.models.Product;
 import com.bird_farm_shop_android.models.User;
 
@@ -27,8 +29,8 @@ public class MainActivity extends AppCompatActivity {
 // =============================================================================================
         // Create User Done
 //        UserDAO userDAO = new UserDAO();
-//        User user = new User("LOLTUCMM", "LOLTUCMM@gmail.com", "0902292912", "123456",
-//                false, "VietNam", "2020-02-02", 1);
+//        User user = new User("LOLTUANCUT", "LOLTUANCUT@gmail.com", "LOLTUANCUT", "LOLTUANCUT",
+//                false, "LOLTUANCUT", "2020-02-02", 1);
 //        userDAO.createUser(user);
 
         // Get All User Done
@@ -134,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
 // =============================================================================================
         // Create NEST DONE
 //        NestDAO nestDAO = new NestDAO();
-//        Product product = new Product("Nest 2", Float.parseFloat("2293"), "This is Nest 2", 93);
+//        Product product = new Product("Nest 4", Float.parseFloat("2293"), "This is Nest 2", 93);
 //        nestDAO.createNest(product);
 
         // Get All NEST DONE
@@ -167,8 +169,8 @@ public class MainActivity extends AppCompatActivity {
 // =============================================================================================
         // Create Order DONE
 //        OrderDAO orderDAO = new OrderDAO();
-//        Order order = new Order(1, "Tu an cut", "92838932", "VietNam",
-//                Float.parseFloat("12333313"), "2023-11-29", OrderStatus.PENDING, "22222 This cdnie Note");
+//        Order order = new Order(3, "LOLMMM", "LOLMMM", "LOLMMM",
+//                Float.parseFloat("12333313"), "2023-11-29", OrderStatus.PENDING, "22222 LOLMMM LOLMMM LOLMMM");
 //        orderDAO.createOrder(order);
 
         // Get All Order DONE
@@ -207,5 +209,46 @@ public class MainActivity extends AppCompatActivity {
 //        Order order = new Order(7, 1, "Xin cam on xin cam on", "9922010122", "ThaiLand",
 //                Float.parseFloat("009922211"), "2023-10-29", OrderStatus.PENDING, "Xin cam on xin cam on");
 //        orderDAO.updateOrder(order);
+
+// =============================================================================================
+        //Create Order Detail DONE
+//        OrderDetailDAO orderDetailDAO = new OrderDetailDAO();
+//        OrderDetail orderDetail = new OrderDetail(3, 3);
+//        orderDetailDAO.createOrderDetail(orderDetail);
+
+        //Get OrderDetail by OrderID DONE
+//        OrderDetailDAO orderDetailDAO = new OrderDetailDAO();
+//        List<OrderDetail> orderDetails = orderDetailDAO.getOrderDetailByOrderID(3);
+//        for (OrderDetail orderDetail : orderDetails)
+//        {
+//            System.out.println(orderDetail.toString());
+//        }
+
+        //Get OrderDetail by OrderDetailID DONE
+//        OrderDetailDAO orderDetailDAO = new OrderDetailDAO();
+//        OrderDetail orderDetail = orderDetailDAO.getOrderDetailByID(3);
+//        System.out.println(orderDetail.toString());
+
+        //Get All Order Detail
+//        OrderDetailDAO orderDetailDAO = new OrderDetailDAO();
+//        List<OrderDetail> orderDetails = orderDetailDAO.getAllOrderDetail();
+//        for (OrderDetail orderDetail : orderDetails)
+//        {
+//            System.out.println("Order Detail: " + orderDetail.toString());
+//        }
+
+        //update Order Detail
+//        OrderDetailDAO orderDetailDAO = new OrderDetailDAO();
+//        OrderDetail orderDetail = new OrderDetail(2, 3, 3);
+//        orderDetailDAO.updateOrderDetail(orderDetail);
+
+        //Delete OrderDetail By OrderDetailId
+//        OrderDetailDAO orderDetailDAO = new OrderDetailDAO();
+//        orderDetailDAO.deleteOrderDetailByID(3);
+
+        //Delete OrderDetail by OrderDetail
+//        OrderDetailDAO orderDetailDAO = new OrderDetailDAO();
+//        OrderDetail orderDetail = new OrderDetail(4, 3, 3);
+//        orderDetailDAO.deleteOrderDetail(orderDetail);
     }
 }

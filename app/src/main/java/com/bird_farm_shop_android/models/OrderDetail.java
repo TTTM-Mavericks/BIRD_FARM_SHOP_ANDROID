@@ -1,12 +1,12 @@
 package com.bird_farm_shop_android.models;
 
 public class OrderDetail {
-    private Integer id;
+    private Integer orderDetailID;
     private Integer productID;
     private Integer orderID;
 
-    public OrderDetail(Integer id, Integer productID, Integer orderID) {
-        this.id = id;
+    public OrderDetail(Integer orderDetailID, Integer productID, Integer orderID) {
+        this.orderDetailID = orderDetailID;
         this.productID = productID;
         this.orderID = orderID;
     }
@@ -19,12 +19,12 @@ public class OrderDetail {
     public OrderDetail() {
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getOrderDetailID() {
+        return orderDetailID;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setOrderDetailID(Integer orderDetailID) {
+        this.orderDetailID = orderDetailID;
     }
 
     public Integer getProductID() {
@@ -46,7 +46,7 @@ public class OrderDetail {
     @Override
     public String toString() {
         return "OrderDetail{" +
-                "id=" + id +
+                "orderDetailID=" + orderDetailID +
                 ", productID=" + productID +
                 ", orderID=" + orderID +
                 '}';
