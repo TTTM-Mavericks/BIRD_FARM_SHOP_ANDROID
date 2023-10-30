@@ -123,6 +123,41 @@ public class UserDAO {
         }
     }
 
+    public User getUserByEmail(String email) {
+        User user = null;
+        try {
+            Connection con = DBUltils.getConnection();
+            if (con != null) {
+                String sql = "SELECT * FROM USER_INFORMATION WHERE EMAIL = ?";
+                PreparedStatement stm = con.prepareStatement(sql);
+                stm.setString(1, email);
+
+                ResultSet rs = stm.executeQuery();
+                if (rs != null) {
+                    while (rs.next()) {
+                        Integer ID = rs.getInt("ID");
+                        String fullName = rs.getString("FULL_NAME");
+                        String phoneNumber = rs.getString("PHONE_NUMBER");
+                        String password = rs.getString("PASSWORD");
+                        boolean gender = rs.getBoolean("GENDER");
+                        String address = rs.getString("ADDRESS");
+                        String dateOfBirth = rs.getString("DATE_OF_BIRTH");
+                        int roleId = rs.getInt("ROLE_ID");
+
+                        user = new User(ID, fullName, email, phoneNumber, password, gender, address, dateOfBirth, roleId);
+                    }
+                    rs.close();
+                }
+                stm.close();
+                con.close();
+            }
+        } catch (Exception ex) {
+            Log.e("ERROR", ex.getMessage());
+        } finally {
+            return user;
+        }
+    }
+
     public boolean updateUser(User user) {
         Boolean result = false;
         try {
@@ -213,6 +248,7 @@ public class UserDAO {
 
                 rs = stm.executeQuery();
                 if (rs.next()) {
+                    Log.d("UserDAO", "LOGIN SUCCESSFULLY WITH EMAIL:  " + email + " PASSWORD: " + password);
                     result = true;
                 }
             }

@@ -37,7 +37,8 @@ dependencies {
     implementation("com.google.android.material:material:1.10.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 //    implementation("net.sourceforge.jtds:jtds:1.3.1")
-    implementation(files("C:/Users/Blues/Desktop/PRM_TTTM/jtds-1.3.1.jar"))
+//    implementation(files("C:/Users/Blues/Desktop/PRM_TTTM/jtds-1.3.1.jar"))
+    implementation(files("E:\\Semester\\Term7\\PRM392\\BIRD_FARM_SHOP_ANDROID\\jtds-1.3.1.jar"))
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 }
