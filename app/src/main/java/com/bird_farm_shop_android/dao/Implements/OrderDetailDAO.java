@@ -1,22 +1,24 @@
-package com.bird_farm_shop_android.dao;
+package com.bird_farm_shop_android.dao.Implements;
 
 import android.util.Log;
-import com.bird_farm_shop_android.DBUltils;
-import com.bird_farm_shop_android.models.OrderDetail;
+import com.bird_farm_shop_android.DBUtils;
+import com.bird_farm_shop_android.dao.Interface.IOrderDetailDAO;
+import com.bird_farm_shop_android.entities.OrderDetail;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OrderDetailDAO {
+public class OrderDetailDAO implements IOrderDetailDAO {
 
+    @Override
     public boolean createOrderDetail(OrderDetail orderDetail) {
         Boolean result = false;
         Connection con = null;
         PreparedStatement stm = null;
         try {
-            con = DBUltils.getConnection();
+            con = DBUtils.getConnection();
             if (con != null) {
                 String orderDetailSql = "INSERT INTO ORDER_DETAIL (PRODUCT_ID, ORDER_ID) VALUES (?, ?)";
                 stm = con.prepareStatement(orderDetailSql);
@@ -45,10 +47,11 @@ public class OrderDetailDAO {
         }
     }
 
+    @Override
     public List<OrderDetail> getAllOrderDetail() {
         List<OrderDetail> orderDetailList = null;
         try {
-            Connection con = DBUltils.getConnection();
+            Connection con = DBUtils.getConnection();
             if (con != null) {
                 String sql = "SELECT * FROM ORDER_DETAIL";
                 PreparedStatement stm = con.prepareStatement(sql);
@@ -79,10 +82,11 @@ public class OrderDetailDAO {
         }
     }
 
+    @Override
     public OrderDetail getOrderDetailByID(Integer orderDetailID) {
         OrderDetail orderDetail = null;
         try {
-            Connection con = DBUltils.getConnection();
+            Connection con = DBUtils.getConnection();
             if (con != null) {
                 String sql = "SELECT * FROM ORDER_DETAIL WHERE ID = ?";
                 PreparedStatement stm = con.prepareStatement(sql);
@@ -109,10 +113,11 @@ public class OrderDetailDAO {
         }
     }
 
+    @Override
     public List<OrderDetail> getOrderDetailByOrderID(Integer orderID) {
         List<OrderDetail> orderDetailList = null;
         try {
-            Connection con = DBUltils.getConnection();
+            Connection con = DBUtils.getConnection();
             if (con != null) {
                 String sql = "SELECT * FROM ORDER_DETAIL WHERE ORDER_ID = ?";
                 PreparedStatement stm = con.prepareStatement(sql);
@@ -144,10 +149,11 @@ public class OrderDetailDAO {
         }
     }
 
+    @Override
     public boolean updateOrderDetail(OrderDetail orderDetail) {
         Boolean result = false;
         try {
-            Connection con = DBUltils.getConnection();
+            Connection con = DBUtils.getConnection();
             if (con != null) {
                 String sql = "UPDATE ORDER_DETAIL SET PRODUCT_ID=?, ORDER_ID=? WHERE ID=?";
                 PreparedStatement stm = con.prepareStatement(sql);
@@ -170,6 +176,7 @@ public class OrderDetailDAO {
         }
     }
 
+    @Override
     public boolean deleteOrderDetail(OrderDetail orderDetail) {
         Boolean result = false;
         try {
@@ -181,10 +188,11 @@ public class OrderDetailDAO {
         }
     }
 
+    @Override
     public boolean deleteOrderDetailByID(Integer orderDetailID) {
         Boolean result = false;
         try {
-            Connection con = DBUltils.getConnection();
+            Connection con = DBUtils.getConnection();
             if (con != null) {
                 String sql = "DELETE FROM ORDER_DETAIL WHERE ID=?";
                 PreparedStatement stm = con.prepareStatement(sql);

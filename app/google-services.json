@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1067290730949",
+    "project_id": "bird-farm-shop-android",
+    "storage_bucket": "bird-farm-shop-android.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1067290730949:android:943b2cae1ad41ebb8e6bac",
+        "android_client_info": {
+          "package_name": "com.bird_farm_shop_android"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB35BUgeJ-gA42tfoUUUWTALoQQMU-7_vU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

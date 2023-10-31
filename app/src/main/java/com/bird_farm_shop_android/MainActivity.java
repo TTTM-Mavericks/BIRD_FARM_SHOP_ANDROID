@@ -1,23 +1,11 @@
 package com.bird_farm_shop_android;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.bird_farm_shop_android.dao.BirdDAO;
-import com.bird_farm_shop_android.dao.FoodDAO;
-import com.bird_farm_shop_android.dao.NestDAO;
-import com.bird_farm_shop_android.dao.OrderDAO;
-import com.bird_farm_shop_android.dao.OrderDetailDAO;
-import com.bird_farm_shop_android.dao.UserDAO;
-import com.bird_farm_shop_android.enums.OrderStatus;
-import com.bird_farm_shop_android.models.Order;
-import com.bird_farm_shop_android.models.OrderDetail;
-import com.bird_farm_shop_android.models.Product;
-import com.bird_farm_shop_android.models.User;
-
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -250,5 +238,26 @@ public class MainActivity extends AppCompatActivity {
 //        OrderDetailDAO orderDetailDAO = new OrderDetailDAO();
 //        OrderDetail orderDetail = new OrderDetail(4, 3, 3);
 //        orderDetailDAO.deleteOrderDetail(orderDetail);
+
+        Button buttonLogin = findViewById(R.id.button_login_main_activity);
+
+        buttonLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        Button buttonRegister = findViewById(R.id.button_register_main_activity);
+        buttonRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 }
