@@ -1,10 +1,11 @@
-package com.bird_farm_shop_android.dao;
+package com.bird_farm_shop_android.dao.Implements;
 
 import android.util.Log;
 
-import com.bird_farm_shop_android.DBUltils;
-import com.bird_farm_shop_android.models.Image;
-import com.bird_farm_shop_android.models.Product;
+import com.bird_farm_shop_android.DBUtils;
+import com.bird_farm_shop_android.dao.Interface.INestDAO;
+import com.bird_farm_shop_android.entities.Image;
+import com.bird_farm_shop_android.entities.Product;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,14 +14,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NestDAO {
+public class NestDAO implements INestDAO {
+    @Override
     public List<Product> getAllNest() {
         List<Product> nestList = new ArrayList<>();
         Connection con = null;
         PreparedStatement stm = null;
 
         try {
-            con = DBUltils.getConnection();
+            con = DBUtils.getConnection();
             if (con != null) {
                 String sql = "SELECT p.ID, p.PRODUCT_NAME, p.PRICE, p.DESCRIPTION, p.QUANTITY " +
                         "FROM PRODUCT p INNER JOIN NEST n ON p.ID = n.ID";
@@ -42,13 +44,14 @@ public class NestDAO {
         return nestList;
     }
 
+    @Override
     public Product getNestByID(Integer nestID) {
         Connection con = null;
         PreparedStatement stm = null;
         Product nest = null;
 
         try {
-            con = DBUltils.getConnection();
+            con = DBUtils.getConnection();
             if (con != null) {
                 String sql = "SELECT p.ID, p.PRODUCT_NAME, p.PRICE, p.DESCRIPTION, p.QUANTITY " +
                         "FROM PRODUCT p INNER JOIN NEST n ON p.ID = n.ID " +
@@ -71,13 +74,14 @@ public class NestDAO {
         return nest;
     }
 
+    @Override
     public boolean createNest(Product nest) {
         Connection con = null;
         PreparedStatement stm = null;
         boolean result = false;
 
         try {
-            con = DBUltils.getConnection();
+            con = DBUtils.getConnection();
             if (con != null) {
                 String productSql = "INSERT INTO PRODUCT (PRODUCT_NAME, PRICE, DESCRIPTION, QUANTITY) VALUES (?, ?, ?, ?)";
                 stm = con.prepareStatement(productSql, PreparedStatement.RETURN_GENERATED_KEYS);
@@ -112,13 +116,14 @@ public class NestDAO {
         return result;
     }
 
+    @Override
     public boolean updateNest(Product nest) {
         Connection con = null;
         PreparedStatement stm = null;
         boolean result = false;
 
         try {
-            con = DBUltils.getConnection();
+            con = DBUtils.getConnection();
             if (con != null) {
                 String productSql = "UPDATE PRODUCT SET PRODUCT_NAME=?, PRICE=?, DESCRIPTION=?, QUANTITY=? WHERE ID=?";
                 stm = con.prepareStatement(productSql);
@@ -142,17 +147,19 @@ public class NestDAO {
         return result;
     }
 
+    @Override
     public boolean deleteNest(Product nest) {
         return deleteNestByID(nest.getProductID());
     }
 
+    @Override
     public boolean deleteNestByID(Integer nestID) {
         Connection con = null;
         PreparedStatement stm = null;
         boolean result = false;
 
         try {
-            con = DBUltils.getConnection();
+            con = DBUtils.getConnection();
             if (con != null) {
                 String deleteProductSql = "DELETE FROM NEST WHERE ID=?";
                 stm = con.prepareStatement(deleteProductSql);

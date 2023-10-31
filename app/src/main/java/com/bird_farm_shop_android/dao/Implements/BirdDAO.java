@@ -1,10 +1,11 @@
-package com.bird_farm_shop_android.dao;
+package com.bird_farm_shop_android.dao.Implements;
 
 import android.util.Log;
 
-import com.bird_farm_shop_android.DBUltils;
-import com.bird_farm_shop_android.models.Image;
-import com.bird_farm_shop_android.models.Product;
+import com.bird_farm_shop_android.DBUtils;
+import com.bird_farm_shop_android.dao.Interface.IBirdDAO;
+import com.bird_farm_shop_android.entities.Image;
+import com.bird_farm_shop_android.entities.Product;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,24 +14,32 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FoodDAO {
-    public List<Product> getAllFood() {
-        List<Product> foodList = new ArrayList<>();
+public class BirdDAO implements IBirdDAO {
+
+    private static final BirdDAO instance = new BirdDAO();
+
+    public static BirdDAO getInstance() {
+        return instance;
+    }
+
+    @Override
+    public List<Product> getAllBird() {
+        List<Product> birdList = new ArrayList<>();
         Connection con = null;
         PreparedStatement stm = null;
 
         try {
-            con = DBUltils.getConnection();
+            con = DBUtils.getConnection();
             if (con != null) {
-                String sql = "SELECT p.ID, p.PRODUCT_NAME, p.PRICE, p.DESCRIPTION, p.QUANTITY " +
-                        "FROM PRODUCT p INNER JOIN FOOD f ON p.ID = f.ID";
-                stm = con.prepareStatement(sql);
+                String productSql = "SELECT p.ID, p.PRODUCT_NAME, p.PRICE, p.DESCRIPTION, p.QUANTITY " +
+                        "FROM PRODUCT p INNER JOIN BIRD b ON p.ID = b.ID";
+                stm = con.prepareStatement(productSql);
                 ResultSet rs = stm.executeQuery();
 
                 while (rs.next()) {
                     Product p = extractProduct(rs);
                     p.setListImages(getImageListForProduct(con, p.getProductID()));
-                    foodList.add(p);
+                    birdList.add(p);
                 }
             }
         } catch (Exception ex) {
@@ -39,27 +48,28 @@ public class FoodDAO {
             closeResources(con, stm);
         }
 
-        return foodList;
+        return birdList;
     }
 
-    public Product getFoodByID(Integer foodID) {
+    @Override
+    public Product getBirdByID(Integer birdID) {
         Connection con = null;
         PreparedStatement stm = null;
-        Product food = null;
+        Product bird = null;
 
         try {
-            con = DBUltils.getConnection();
+            con = DBUtils.getConnection();
             if (con != null) {
-                String sql = "SELECT p.ID, p.PRODUCT_NAME, p.PRICE, p.DESCRIPTION, p.QUANTITY " +
-                        "FROM PRODUCT p INNER JOIN FOOD f ON p.ID = f.ID " +
+                String productSql = "SELECT p.ID, p.PRODUCT_NAME, p.PRICE, p.DESCRIPTION, p.QUANTITY " +
+                        "FROM PRODUCT p INNER JOIN BIRD b ON p.ID = b.ID " +
                         "WHERE p.ID = ?";
-                stm = con.prepareStatement(sql);
-                stm.setInt(1, foodID);
+                stm = con.prepareStatement(productSql);
+                stm.setInt(1, birdID);
                 ResultSet rs = stm.executeQuery();
 
                 if (rs.next()) {
-                    food = extractProduct(rs);
-                    food.setListImages(getImageListForProduct(con, food.getProductID()));
+                    bird = extractProduct(rs);
+                    bird.setListImages(getImageListForProduct(con, bird.getProductID()));
                 }
             }
         } catch (Exception ex) {
@@ -68,115 +78,7 @@ public class FoodDAO {
             closeResources(con, stm);
         }
 
-        return food;
-    }
-
-    public boolean createFood(Product food) {
-        Connection con = null;
-        PreparedStatement stm = null;
-        boolean result = false;
-
-        try {
-            con = DBUltils.getConnection();
-            if (con != null) {
-                String productSql = "INSERT INTO PRODUCT (PRODUCT_NAME, PRICE, DESCRIPTION, QUANTITY) VALUES (?, ?, ?, ?)";
-                stm = con.prepareStatement(productSql, PreparedStatement.RETURN_GENERATED_KEYS);
-                stm.setString(1, food.getProductName());
-                stm.setFloat(2, food.getPrice());
-                stm.setString(3, food.getDescription());
-                stm.setInt(4, food.getQuantity());
-
-                int rowsAffected = stm.executeUpdate();
-                if (rowsAffected > 0) {
-                    ResultSet generatedKeys = stm.getGeneratedKeys();
-                    if (generatedKeys.next()) {
-                        int generatedProductId = generatedKeys.getInt(1);
-
-                        String foodSql = "INSERT INTO FOOD (ID) VALUES (?)";
-                        stm = con.prepareStatement(foodSql);
-                        stm.setInt(1, generatedProductId);
-                        rowsAffected = stm.executeUpdate();
-
-                        if (rowsAffected > 0) {
-                            result = true;
-                        }
-                    }
-                }
-            }
-        } catch (Exception ex) {
-            Log.e("ERROR", ex.getMessage());
-        } finally {
-            closeResources(con, stm);
-        }
-
-        return result;
-    }
-
-    public boolean updateFood(Product food) {
-        Connection con = null;
-        PreparedStatement stm = null;
-        boolean result = false;
-
-        try {
-            con = DBUltils.getConnection();
-            if (con != null) {
-                String productSql = "UPDATE PRODUCT SET PRODUCT_NAME=?, PRICE=?, DESCRIPTION=?, QUANTITY=? WHERE ID=?";
-                stm = con.prepareStatement(productSql);
-                stm.setString(1, food.getProductName());
-                stm.setFloat(2, food.getPrice());
-                stm.setString(3, food.getDescription());
-                stm.setInt(4, food.getQuantity());
-                stm.setInt(5, food.getProductID());
-
-                int rowsAffected = stm.executeUpdate();
-                if (rowsAffected > 0) {
-                    result = true;
-                }
-            }
-        } catch (Exception ex) {
-            Log.e("ERROR", ex.getMessage());
-        } finally {
-            closeResources(con, stm);
-        }
-
-        return result;
-    }
-
-    public boolean deleteFood(Product food) {
-        return deleteFoodByID(food.getProductID());
-    }
-
-    public boolean deleteFoodByID(Integer foodID) {
-        Connection con = null;
-        PreparedStatement stm = null;
-        boolean result = false;
-
-        try {
-            con = DBUltils.getConnection();
-            if (con != null) {
-                String deleteProductSql = "DELETE FROM FOOD WHERE ID=?";
-                stm = con.prepareStatement(deleteProductSql);
-                stm.setInt(1, foodID);
-
-                int rowsAffected = stm.executeUpdate();
-                if (rowsAffected > 0) {
-                    String foodSql = "DELETE FROM PRODUCT WHERE ID=?";
-                    stm = con.prepareStatement(foodSql);
-                    stm.setInt(1, foodID);
-                    rowsAffected = stm.executeUpdate();
-
-                    if (rowsAffected > 0) {
-                        result = true;
-                    }
-                }
-            }
-        } catch (Exception ex) {
-            Log.e("ERROR", ex.getMessage());
-        } finally {
-            closeResources(con, stm);
-        }
-
-        return result;
+        return bird;
     }
 
     private List<Image> getImageListForProduct(Connection con, Integer productID) {
@@ -200,6 +102,108 @@ public class FoodDAO {
         }
 
         return imageList;
+    }
+
+    @Override
+    public boolean createBird(Product bird) {
+        Connection con = null;
+        PreparedStatement stm = null;
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                // Insert the product information into the PRODUCT table
+                String productSql = "INSERT INTO PRODUCT (PRODUCT_NAME, PRICE, DESCRIPTION, QUANTITY) VALUES (?, ?, ?, ?)";
+                stm = con.prepareStatement(productSql, PreparedStatement.RETURN_GENERATED_KEYS);
+                stm.setString(1, bird.getProductName());
+                stm.setFloat(2, bird.getPrice());
+                stm.setString(3, bird.getDescription());
+                stm.setInt(4, bird.getQuantity());
+
+                int rowsAffected = stm.executeUpdate();
+                if (rowsAffected > 0) {
+                    ResultSet generatedKeys = stm.getGeneratedKeys();
+                    if (generatedKeys.next()) {
+                        int generatedProductId = generatedKeys.getInt(1);
+
+                        // Insert the bird-specific information into the BIRD table
+                        String birdSql = "INSERT INTO BIRD (ID) VALUES (?)";
+                        stm = con.prepareStatement(birdSql);
+                        stm.setInt(1, generatedProductId);
+
+                        rowsAffected = stm.executeUpdate();
+                        return rowsAffected > 0;
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            Log.e("ERROR", ex.getMessage());
+        } finally {
+            closeResources(con, stm);
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean updateBird(Product bird) {
+        Connection con = null;
+        PreparedStatement stm = null;
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                String productSql = "UPDATE PRODUCT SET PRODUCT_NAME=?, PRICE=?, DESCRIPTION=?, QUANTITY=? WHERE ID=?";
+                stm = con.prepareStatement(productSql);
+                stm.setString(1, bird.getProductName());
+                stm.setFloat(2, bird.getPrice());
+                stm.setString(3, bird.getDescription());
+                stm.setInt(4, bird.getQuantity());
+                stm.setInt(5, bird.getProductID());
+
+                int rowsAffected = stm.executeUpdate();
+                return rowsAffected > 0;
+            }
+        } catch (Exception ex) {
+            Log.e("ERROR", ex.getMessage());
+        } finally {
+            closeResources(con, stm);
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean deleteBird(Product bird) {
+        return deleteBirdByID(bird.getProductID());
+    }
+    @Override
+    public boolean deleteBirdByID(Integer birdID) {
+        Connection con = null;
+        PreparedStatement stm = null;
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                String deleteProductSql = "DELETE FROM BIRD WHERE ID=?";
+                stm = con.prepareStatement(deleteProductSql);
+                stm.setInt(1, birdID);
+
+                int rowsAffected = stm.executeUpdate();
+                if (rowsAffected > 0) {
+                    String birdSql = "DELETE FROM PRODUCT WHERE ID=?";
+                    stm = con.prepareStatement(birdSql);
+                    stm.setInt(1, birdID);
+                    rowsAffected = stm.executeUpdate();
+                    return rowsAffected > 0;
+                }
+            }
+        } catch (Exception ex) {
+            Log.e("ERROR", ex.getMessage());
+        } finally {
+            closeResources(con, stm);
+        }
+
+        return false;
     }
 
     private Product extractProduct(ResultSet rs) throws SQLException {

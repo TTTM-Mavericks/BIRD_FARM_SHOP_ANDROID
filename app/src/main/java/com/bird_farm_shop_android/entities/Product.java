@@ -1,4 +1,4 @@
-package com.bird_farm_shop_android.models;
+package com.bird_farm_shop_android.entities;
 
 import java.util.List;
 

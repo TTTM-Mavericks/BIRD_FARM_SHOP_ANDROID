@@ -6,11 +6,11 @@ import android.util.Log;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
-public class DBUltils {
+public class DBUtils {
     Connection connection;
     public static Connection getConnection() {
         Connection connection = null; // Declare connection here
-        String ip = "10.86.3.189";
+        String ip = "10.86.31.130";
         String port = "1433";
         String db = "BIRD_FARM_SHOP_ANDROID";
         String username = "sa";

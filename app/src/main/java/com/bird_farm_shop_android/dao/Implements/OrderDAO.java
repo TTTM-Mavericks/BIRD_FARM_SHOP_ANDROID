@@ -1,23 +1,25 @@
-package com.bird_farm_shop_android.dao;
+package com.bird_farm_shop_android.dao.Implements;
 
 import android.util.Log;
-import com.bird_farm_shop_android.DBUltils;
+import com.bird_farm_shop_android.DBUtils;
+import com.bird_farm_shop_android.dao.Interface.IOrderDAO;
 import com.bird_farm_shop_android.enums.OrderStatus;
-import com.bird_farm_shop_android.models.Order;
+import com.bird_farm_shop_android.entities.Order;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OrderDAO {
+public class OrderDAO implements IOrderDAO {
 
+    @Override
     public boolean createOrder(Order order) {
         Boolean result = false;
         Connection con = null;
         PreparedStatement stm = null;
         try {
-            con = DBUltils.getConnection();
+            con = DBUtils.getConnection();
             if (con != null) {
                 Log.e("LOG", "THIS IS CREATE ORDER METHOD INSIDE HERRE");
                 String orderSql = "INSERT INTO [ORDER] (CUSTOMER_ID, CUSTOMER_NAME, CUSTOMER_PHONE, CUSTOMER_ADDRESS, " +
@@ -54,10 +56,11 @@ public class OrderDAO {
         }
     }
 
+    @Override
     public List<Order> getAllOrder() {
         List<Order> orderList = null;
         try {
-            Connection con = DBUltils.getConnection();
+            Connection con = DBUtils.getConnection();
             if (con != null) {
                 String sql = "SELECT * FROM [ORDER]";
                 PreparedStatement stm = con.prepareStatement(sql);
@@ -105,10 +108,11 @@ public class OrderDAO {
         }
     }
 
+    @Override
     public Order getOrderByID(Integer orderID) {
         Order order = null;
         try {
-            Connection con = DBUltils.getConnection();
+            Connection con = DBUtils.getConnection();
             if (con != null) {
                 String sql = "SELECT * FROM [ORDER] WHERE ID = ?";
                 PreparedStatement stm = con.prepareStatement(sql);
@@ -154,10 +158,11 @@ public class OrderDAO {
         }
     }
 
+    @Override
     public List<Order> getOrderByCustomerID(Integer customerID) {
         List<Order> orderList = null;
         try {
-            Connection con = DBUltils.getConnection();
+            Connection con = DBUtils.getConnection();
             if (con != null) {
                 String sql = "SELECT * FROM [ORDER] WHERE CUSTOMER_ID = ?";
                 PreparedStatement stm = con.prepareStatement(sql);
@@ -206,10 +211,11 @@ public class OrderDAO {
         }
     }
 
+    @Override
     public boolean updateOrder(Order order) {
         Boolean result = false;
         try {
-            Connection con = DBUltils.getConnection();
+            Connection con = DBUtils.getConnection();
             if (con != null) {
                 String sql = "UPDATE [ORDER] SET CUSTOMER_NAME=?, CUSTOMER_PHONE=?, CUSTOMER_ADDRESS=?, " +
                         "TOTAL_PRICE=?, ORDER_DATE=?, ORDER_STATUS=?, NOTE=? WHERE ID=?";
@@ -238,6 +244,7 @@ public class OrderDAO {
         }
     }
 
+    @Override
     public boolean deleteOrder(Order order) {
         Boolean result = false;
         try {
@@ -249,10 +256,11 @@ public class OrderDAO {
         }
     }
 
+    @Override
     public boolean deleteOrderByID(Integer orderID) {
         Boolean result = false;
         try {
-            Connection con = DBUltils.getConnection();
+            Connection con = DBUtils.getConnection();
             if (con != null) {
                 String sql = "DELETE FROM [ORDER] WHERE ID=?";
                 PreparedStatement stm = con.prepareStatement(sql);
