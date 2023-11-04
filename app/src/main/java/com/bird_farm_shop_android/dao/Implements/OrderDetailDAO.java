@@ -1,7 +1,7 @@
 package com.bird_farm_shop_android.dao.Implements;
 
 import android.util.Log;
-import com.bird_farm_shop_android.DBUtils;
+import com.bird_farm_shop_android.database.DBUtils;
 import com.bird_farm_shop_android.dao.Interface.IOrderDetailDAO;
 import com.bird_farm_shop_android.entities.OrderDetail;
 import java.sql.Connection;

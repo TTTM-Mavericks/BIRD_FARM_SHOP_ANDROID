@@ -1,4 +1,4 @@
-package com.bird_farm_shop_android;
+package com.bird_farm_shop_android.authenticate;
 
 import static android.content.ContentValues.TAG;
 
@@ -18,9 +18,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bird_farm_shop_android.R;
 import com.bird_farm_shop_android.dao.Interface.IUserDAO;
 import com.bird_farm_shop_android.dao.Implements.UserDAO;
 import com.bird_farm_shop_android.entities.User;
+import com.bird_farm_shop_android.validation.Validation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -61,7 +63,7 @@ public class RegisterActivity extends AppCompatActivity {
         editTextRegisterDoB = findViewById(R.id.editText_register_dob);
         editTextRegisterMobile = findViewById(R.id.editText_register_mobile);
         editTextRegisterPwd = findViewById(R.id.editText_register_password);
-        editTextRegisterAddress = findViewById(R.id.editText_register_Address);
+        editTextRegisterAddress = findViewById(R.id.editText_register_address);
 
         progressBar = findViewById(R.id.progressBar);
         radioGroupRegisterGender = findViewById(R.id.radio_group_register_gender);
@@ -88,6 +90,11 @@ public class RegisterActivity extends AppCompatActivity {
                     editTextRegisterFullName.setError("Full name is required");
                     editTextRegisterFullName.requestFocus();
                 }
+                else if(!Validation.checkValidAlphabet(textFullName)){
+                    Toast.makeText(RegisterActivity.this, "Full name can not contain number", Toast.LENGTH_SHORT).show();
+                    editTextRegisterFullName.setError("Full name can not contain number");
+                    editTextRegisterFullName.requestFocus();
+                }
                 else if(TextUtils.isEmpty(textEmail)){
                     Toast.makeText(RegisterActivity.this, "Email is required", Toast.LENGTH_SHORT).show();
                     editTextRegisterEmail.setError("Email is required");
@@ -109,9 +116,19 @@ public class RegisterActivity extends AppCompatActivity {
                     editTextRegisterDoB.setError("Date of birth is required");
                     editTextRegisterDoB.requestFocus();
                 }
+                else if(!Validation.checkValidDOB(textDoB)){
+                    Toast.makeText(RegisterActivity.this, "Date of birth is incorrect format", Toast.LENGTH_SHORT).show();
+                    editTextRegisterDoB.setError("Date of birth is incorrect format");
+                    editTextRegisterDoB.requestFocus();
+                }
                 else if(TextUtils.isEmpty(textMobile)){
                     Toast.makeText(RegisterActivity.this, "Phone is required", Toast.LENGTH_SHORT).show();
                     editTextRegisterMobile.setError("Phone is required");
+                    editTextRegisterMobile.requestFocus();
+                }
+                else if(!Validation.checkValidNumber(textMobile)){
+                    Toast.makeText(RegisterActivity.this, "Phone can not contain Letters", Toast.LENGTH_SHORT).show();
+                    editTextRegisterMobile.setError("Phone can not contain Letters");
                     editTextRegisterMobile.requestFocus();
                 }
                 else if(TextUtils.isEmpty(textPwd)){

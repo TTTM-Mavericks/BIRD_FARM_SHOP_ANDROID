@@ -3,6 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools">
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -15,10 +18,52 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
 
+        <!--  Bird Config  -->
+        <activity
+            android:name=".bird.BirdUploadActivity"
+            android:exported="false" />
+        <activity
+            android:name=".bird.BirdUpdateActivity"
+            android:exported="false" />
+        <activity
+            android:name=".bird.BirdDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".bird.BirdActivity"
+            android:exported="false" />
+
+        <!--  Nest Config  -->
+        <activity
+            android:name=".nest.NestActivity"
+            android:exported="false" />
+        <activity
+            android:name=".nest.NestUpdateActivity"
+            android:exported="false" />
+        <activity
+            android:name=".nest.NestDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".nest.NestUploadActivity"
+            android:exported="false" />
+
+        <!--  Food Config  -->
+        <activity
+            android:name=".food.FoodActivity"
+            android:exported="false" />
+        <activity
+            android:name=".food.FoodDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".food.FoodUploadActivity"
+            android:exported="false" />
+        <activity
+            android:name=".food.FoodUpdateActivity"
+            android:exported="false" />
+
         <!--    Config for Login and Register Activity  -->
-        <activity android:name=".LoginActivity"/>
-        <activity android:name=".RegisterActivity"/>
-        <!--        -->
+        <activity android:name=".authenticate.LoginActivity"/>
+        <activity android:name=".authenticate.RegisterActivity"/>
+        <activity android:name=".MainActivityNavigationBar"/>
 
         <activity
             android:name=".MainActivity"

@@ -2,7 +2,7 @@ package com.bird_farm_shop_android.dao.Implements;
 
 import android.util.Log;
 
-import com.bird_farm_shop_android.DBUtils;
+import com.bird_farm_shop_android.database.DBUtils;
 import com.bird_farm_shop_android.dao.Interface.IBirdDAO;
 import com.bird_farm_shop_android.entities.Image;
 import com.bird_farm_shop_android.entities.Product;
@@ -23,36 +23,7 @@ public class BirdDAO implements IBirdDAO {
     }
 
     @Override
-    public List<Product> getAllBird() {
-        List<Product> birdList = new ArrayList<>();
-        Connection con = null;
-        PreparedStatement stm = null;
-
-        try {
-            con = DBUtils.getConnection();
-            if (con != null) {
-                String productSql = "SELECT p.ID, p.PRODUCT_NAME, p.PRICE, p.DESCRIPTION, p.QUANTITY " +
-                        "FROM PRODUCT p INNER JOIN BIRD b ON p.ID = b.ID";
-                stm = con.prepareStatement(productSql);
-                ResultSet rs = stm.executeQuery();
-
-                while (rs.next()) {
-                    Product p = extractProduct(rs);
-                    p.setListImages(getImageListForProduct(con, p.getProductID()));
-                    birdList.add(p);
-                }
-            }
-        } catch (Exception ex) {
-            Log.e("ERROR", ex.getMessage());
-        } finally {
-            closeResources(con, stm);
-        }
-
-        return birdList;
-    }
-
-    @Override
-    public Product getBirdByID(Integer birdID) {
+    public Product getBirdByImageUrl(String imageUrl) {
         Connection con = null;
         PreparedStatement stm = null;
         Product bird = null;
@@ -60,16 +31,15 @@ public class BirdDAO implements IBirdDAO {
         try {
             con = DBUtils.getConnection();
             if (con != null) {
-                String productSql = "SELECT p.ID, p.PRODUCT_NAME, p.PRICE, p.DESCRIPTION, p.QUANTITY " +
+                String productSql = "SELECT p.ID, p.PRODUCT_NAME, p.PRICE, p.DESCRIPTION, p.QUANTITY, p.IMAGE " +
                         "FROM PRODUCT p INNER JOIN BIRD b ON p.ID = b.ID " +
-                        "WHERE p.ID = ?";
+                        "WHERE p.IMAGE = ?";
                 stm = con.prepareStatement(productSql);
-                stm.setInt(1, birdID);
+                stm.setString(1, imageUrl);
                 ResultSet rs = stm.executeQuery();
 
                 if (rs.next()) {
                     bird = extractProduct(rs);
-                    bird.setListImages(getImageListForProduct(con, bird.getProductID()));
                 }
             }
         } catch (Exception ex) {
@@ -81,28 +51,6 @@ public class BirdDAO implements IBirdDAO {
         return bird;
     }
 
-    private List<Image> getImageListForProduct(Connection con, Integer productID) {
-        List<Image> imageList = new ArrayList<>();
-        PreparedStatement IMGstm = null;
-
-        try {
-            String IMGsql = "SELECT ID, IMAGE_URL, PRODUCT_ID FROM IMAGE WHERE PRODUCT_ID = ?";
-            IMGstm = con.prepareStatement(IMGsql);
-            IMGstm.setInt(1, productID);
-            ResultSet IMGrs = IMGstm.executeQuery();
-
-            while (IMGrs.next()) {
-                Image img = extractImage(IMGrs);
-                imageList.add(img);
-            }
-        } catch (Exception ex) {
-            Log.e("ERROR", ex.getMessage());
-        } finally {
-            closeResources(null, IMGstm);
-        }
-
-        return imageList;
-    }
 
     @Override
     public boolean createBird(Product bird) {
@@ -112,12 +60,13 @@ public class BirdDAO implements IBirdDAO {
             con = DBUtils.getConnection();
             if (con != null) {
                 // Insert the product information into the PRODUCT table
-                String productSql = "INSERT INTO PRODUCT (PRODUCT_NAME, PRICE, DESCRIPTION, QUANTITY) VALUES (?, ?, ?, ?)";
+                String productSql = "INSERT INTO PRODUCT (PRODUCT_NAME, PRICE, DESCRIPTION, QUANTITY, IMAGE) VALUES (?, ?, ?, ?, ?)";
                 stm = con.prepareStatement(productSql, PreparedStatement.RETURN_GENERATED_KEYS);
                 stm.setString(1, bird.getProductName());
                 stm.setFloat(2, bird.getPrice());
                 stm.setString(3, bird.getDescription());
                 stm.setInt(4, bird.getQuantity());
+                stm.setString(5, bird.getImage());
 
                 int rowsAffected = stm.executeUpdate();
                 if (rowsAffected > 0) {
@@ -145,20 +94,20 @@ public class BirdDAO implements IBirdDAO {
     }
 
     @Override
-    public boolean updateBird(Product bird) {
+    public boolean updateBirdByImageUrl(Product bird, String imageUrl) {
         Connection con = null;
         PreparedStatement stm = null;
-
         try {
             con = DBUtils.getConnection();
             if (con != null) {
-                String productSql = "UPDATE PRODUCT SET PRODUCT_NAME=?, PRICE=?, DESCRIPTION=?, QUANTITY=? WHERE ID=?";
+                String productSql = "UPDATE PRODUCT SET PRODUCT_NAME=?, PRICE=?, DESCRIPTION=?, QUANTITY=?, IMAGE = ? WHERE IMAGE=?";
                 stm = con.prepareStatement(productSql);
                 stm.setString(1, bird.getProductName());
                 stm.setFloat(2, bird.getPrice());
                 stm.setString(3, bird.getDescription());
                 stm.setInt(4, bird.getQuantity());
-                stm.setInt(5, bird.getProductID());
+                stm.setString(5, bird.getImage());
+                stm.setString(6, imageUrl);
 
                 int rowsAffected = stm.executeUpdate();
                 return rowsAffected > 0;
@@ -171,28 +120,24 @@ public class BirdDAO implements IBirdDAO {
 
         return false;
     }
-
     @Override
-    public boolean deleteBird(Product bird) {
-        return deleteBirdByID(bird.getProductID());
-    }
-    @Override
-    public boolean deleteBirdByID(Integer birdID) {
+    public boolean deleteBirdByImageUrl(String imageUrl) {
         Connection con = null;
         PreparedStatement stm = null;
-
+        boolean result = false;
+        Product product = getBirdByImageUrl(imageUrl);
         try {
             con = DBUtils.getConnection();
             if (con != null) {
                 String deleteProductSql = "DELETE FROM BIRD WHERE ID=?";
                 stm = con.prepareStatement(deleteProductSql);
-                stm.setInt(1, birdID);
+                stm.setInt(1, product.getProductID());
 
                 int rowsAffected = stm.executeUpdate();
                 if (rowsAffected > 0) {
                     String birdSql = "DELETE FROM PRODUCT WHERE ID=?";
                     stm = con.prepareStatement(birdSql);
-                    stm.setInt(1, birdID);
+                    stm.setInt(1, product.getProductID());
                     rowsAffected = stm.executeUpdate();
                     return rowsAffected > 0;
                 }
@@ -203,7 +148,7 @@ public class BirdDAO implements IBirdDAO {
             closeResources(con, stm);
         }
 
-        return false;
+        return result;
     }
 
     private Product extractProduct(ResultSet rs) throws SQLException {
@@ -213,13 +158,6 @@ public class BirdDAO implements IBirdDAO {
         String DESCRIPTION = rs.getString("DESCRIPTION");
         Integer QUANTITY = rs.getInt("QUANTITY");
         return new Product(ID, PRODUCT_NAME, PRICE, DESCRIPTION, QUANTITY);
-    }
-
-    private Image extractImage(ResultSet rs) throws SQLException {
-        Integer ID = rs.getInt("ID");
-        String imageUrl = rs.getString("IMAGE_URL");
-        Integer productID = rs.getInt("PRODUCT_ID");
-        return new Image(ID, imageUrl, productID);
     }
 
     private void closeResources(Connection con, PreparedStatement stm) {
