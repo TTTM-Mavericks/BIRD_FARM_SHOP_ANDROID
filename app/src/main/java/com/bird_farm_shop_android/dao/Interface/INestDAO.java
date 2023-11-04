@@ -5,10 +5,8 @@ import com.bird_farm_shop_android.entities.Product;
 import java.util.List;
 
 public interface INestDAO {
-    public List<Product> getAllNest();
-    public Product getNestByID(Integer nestID);
+    public Product getNestByImageUrl(String imageUrl);
     public boolean createNest(Product nest);
-    public boolean updateNest(Product nest);
-    public boolean deleteNest(Product nest);
-    public boolean deleteNestByID(Integer nestID);
+    public boolean updateNestByImageUrl(Product nest, String imageUrl);
+    public boolean deleteNestByImageUrl(String imageUrl);
 }

@@ -2,7 +2,7 @@ package com.bird_farm_shop_android.dao.Implements;
 
 import android.util.Log;
 
-import com.bird_farm_shop_android.DBUtils;
+import com.bird_farm_shop_android.database.DBUtils;
 import com.bird_farm_shop_android.dao.Interface.IFoodDAO;
 import com.bird_farm_shop_android.entities.Image;
 import com.bird_farm_shop_android.entities.Product;
@@ -15,37 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FoodDAO implements IFoodDAO {
-    @Override
-    public List<Product> getAllFood() {
-        List<Product> foodList = new ArrayList<>();
-        Connection con = null;
-        PreparedStatement stm = null;
-
-        try {
-            con = DBUtils.getConnection();
-            if (con != null) {
-                String sql = "SELECT p.ID, p.PRODUCT_NAME, p.PRICE, p.DESCRIPTION, p.QUANTITY " +
-                        "FROM PRODUCT p INNER JOIN FOOD f ON p.ID = f.ID";
-                stm = con.prepareStatement(sql);
-                ResultSet rs = stm.executeQuery();
-
-                while (rs.next()) {
-                    Product p = extractProduct(rs);
-                    p.setListImages(getImageListForProduct(con, p.getProductID()));
-                    foodList.add(p);
-                }
-            }
-        } catch (Exception ex) {
-            Log.e("ERROR", ex.getMessage());
-        } finally {
-            closeResources(con, stm);
-        }
-
-        return foodList;
-    }
 
     @Override
-    public Product getFoodByID(Integer foodID) {
+    public Product getFoodByImageUrl(String imageUrl) {
         Connection con = null;
         PreparedStatement stm = null;
         Product food = null;
@@ -53,16 +25,15 @@ public class FoodDAO implements IFoodDAO {
         try {
             con = DBUtils.getConnection();
             if (con != null) {
-                String sql = "SELECT p.ID, p.PRODUCT_NAME, p.PRICE, p.DESCRIPTION, p.QUANTITY " +
-                        "FROM PRODUCT p INNER JOIN FOOD f ON p.ID = f.ID " +
-                        "WHERE p.ID = ?";
-                stm = con.prepareStatement(sql);
-                stm.setInt(1, foodID);
+                String productSql = "SELECT p.ID, p.PRODUCT_NAME, p.PRICE, p.DESCRIPTION, p.QUANTITY, p.IMAGE " +
+                        "FROM PRODUCT p INNER JOIN FOOD b ON p.ID = b.ID " +
+                        "WHERE p.IMAGE = ?";
+                stm = con.prepareStatement(productSql);
+                stm.setString(1, imageUrl);
                 ResultSet rs = stm.executeQuery();
 
                 if (rs.next()) {
                     food = extractProduct(rs);
-                    food.setListImages(getImageListForProduct(con, food.getProductID()));
                 }
             }
         } catch (Exception ex) {
@@ -83,12 +54,13 @@ public class FoodDAO implements IFoodDAO {
         try {
             con = DBUtils.getConnection();
             if (con != null) {
-                String productSql = "INSERT INTO PRODUCT (PRODUCT_NAME, PRICE, DESCRIPTION, QUANTITY) VALUES (?, ?, ?, ?)";
+                String productSql = "INSERT INTO PRODUCT (PRODUCT_NAME, PRICE, DESCRIPTION, QUANTITY, IMAGE) VALUES (?, ?, ?, ?, ?)";
                 stm = con.prepareStatement(productSql, PreparedStatement.RETURN_GENERATED_KEYS);
                 stm.setString(1, food.getProductName());
                 stm.setFloat(2, food.getPrice());
                 stm.setString(3, food.getDescription());
                 stm.setInt(4, food.getQuantity());
+                stm.setString(5, food.getImage());
 
                 int rowsAffected = stm.executeUpdate();
                 if (rowsAffected > 0) {
@@ -117,7 +89,7 @@ public class FoodDAO implements IFoodDAO {
     }
 
     @Override
-    public boolean updateFood(Product food) {
+    public boolean updateFoodByImageUrl(Product food, String imageUrl) {
         Connection con = null;
         PreparedStatement stm = null;
         boolean result = false;
@@ -125,13 +97,14 @@ public class FoodDAO implements IFoodDAO {
         try {
             con = DBUtils.getConnection();
             if (con != null) {
-                String productSql = "UPDATE PRODUCT SET PRODUCT_NAME=?, PRICE=?, DESCRIPTION=?, QUANTITY=? WHERE ID=?";
+                String productSql = "UPDATE PRODUCT SET PRODUCT_NAME=?, PRICE=?, DESCRIPTION=?, QUANTITY=?, IMAGE = ? WHERE IMAGE=?";
                 stm = con.prepareStatement(productSql);
                 stm.setString(1, food.getProductName());
                 stm.setFloat(2, food.getPrice());
                 stm.setString(3, food.getDescription());
                 stm.setInt(4, food.getQuantity());
-                stm.setInt(5, food.getProductID());
+                stm.setString(5, food.getImage());
+                stm.setString(6, imageUrl);
 
                 int rowsAffected = stm.executeUpdate();
                 if (rowsAffected > 0) {
@@ -148,28 +121,24 @@ public class FoodDAO implements IFoodDAO {
     }
 
     @Override
-    public boolean deleteFood(Product food) {
-        return deleteFoodByID(food.getProductID());
-    }
-
-    @Override
-    public boolean deleteFoodByID(Integer foodID) {
+    public boolean deleteFoodByImageUrl(String imageUrl) {
         Connection con = null;
         PreparedStatement stm = null;
         boolean result = false;
+        Product product = getFoodByImageUrl(imageUrl);
 
         try {
             con = DBUtils.getConnection();
             if (con != null) {
                 String deleteProductSql = "DELETE FROM FOOD WHERE ID=?";
                 stm = con.prepareStatement(deleteProductSql);
-                stm.setInt(1, foodID);
+                stm.setInt(1, product.getProductID());
 
                 int rowsAffected = stm.executeUpdate();
                 if (rowsAffected > 0) {
                     String foodSql = "DELETE FROM PRODUCT WHERE ID=?";
                     stm = con.prepareStatement(foodSql);
-                    stm.setInt(1, foodID);
+                    stm.setInt(1, product.getProductID());
                     rowsAffected = stm.executeUpdate();
 
                     if (rowsAffected > 0) {
@@ -186,29 +155,6 @@ public class FoodDAO implements IFoodDAO {
         return result;
     }
 
-    private List<Image> getImageListForProduct(Connection con, Integer productID) {
-        List<Image> imageList = new ArrayList<>();
-        PreparedStatement IMGstm = null;
-
-        try {
-            String IMGsql = "SELECT ID, IMAGE_URL, PRODUCT_ID FROM IMAGE WHERE PRODUCT_ID = ?";
-            IMGstm = con.prepareStatement(IMGsql);
-            IMGstm.setInt(1, productID);
-            ResultSet IMGrs = IMGstm.executeQuery();
-
-            while (IMGrs.next()) {
-                Image img = extractImage(IMGrs);
-                imageList.add(img);
-            }
-        } catch (Exception ex) {
-            Log.e("ERROR", ex.getMessage());
-        } finally {
-            closeResources(null, IMGstm);
-        }
-
-        return imageList;
-    }
-
     private Product extractProduct(ResultSet rs) throws SQLException {
         Integer ID = rs.getInt("ID");
         String PRODUCT_NAME = rs.getString("PRODUCT_NAME");
@@ -216,13 +162,6 @@ public class FoodDAO implements IFoodDAO {
         String DESCRIPTION = rs.getString("DESCRIPTION");
         Integer QUANTITY = rs.getInt("QUANTITY");
         return new Product(ID, PRODUCT_NAME, PRICE, DESCRIPTION, QUANTITY);
-    }
-
-    private Image extractImage(ResultSet rs) throws SQLException {
-        Integer ID = rs.getInt("ID");
-        String imageUrl = rs.getString("IMAGE_URL");
-        Integer productID = rs.getInt("PRODUCT_ID");
-        return new Image(ID, imageUrl, productID);
     }
 
     private void closeResources(Connection con, PreparedStatement stm) {

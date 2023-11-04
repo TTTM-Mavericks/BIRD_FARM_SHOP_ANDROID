@@ -8,13 +8,21 @@ public class Product {
     private Float price;
     private String description;
     private Integer quantity;
-    private List<Image> listImages;
+    private String image;
 
     public Product(String productName, Float price, String description, Integer quantity) {
         this.productName = productName;
         this.price = price;
         this.description = description;
         this.quantity = quantity;
+    }
+
+    public Product(String productName, Float price, String description, Integer quantity, String image) {
+        this.productName = productName;
+        this.price = price;
+        this.description = description;
+        this.quantity = quantity;
+        this.image = image;
     }
 
     public Product(Integer productID, String productName, Float price, String description, Integer quantity) {
@@ -65,12 +73,12 @@ public class Product {
         this.quantity = quantity;
     }
 
-    public List<Image> getListImages() {
-        return listImages;
+    public String getImage() {
+        return image;
     }
 
-    public void setListImages(List<Image> listImages) {
-        this.listImages = listImages;
+    public void setImage(String image) {
+        this.image = image;
     }
 
     @Override
@@ -81,7 +89,7 @@ public class Product {
                 ", price=" + price +
                 ", description='" + description + '\'' +
                 ", quantity=" + quantity +
-                ", listImages=" + listImages +
+                ", listImages=" + image +
                 '}';
     }
 }

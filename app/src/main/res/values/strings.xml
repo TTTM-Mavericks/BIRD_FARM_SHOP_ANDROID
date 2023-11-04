@@ -1,7 +1,8 @@
 <resources>
-    <string name="app_name">firebase-auth-app</string>
     <string name="register">Register</string>
     <string name="click_to_reset">Click to reset</string>
     <string name="upload_picture">Upload picture</string>
+    <string name="app_name">Bird Farm Shop</string>
+    <string name="title_activity_upload">UploadActivity</string>
     <string name="update_email">Update email</string>
 </resources>

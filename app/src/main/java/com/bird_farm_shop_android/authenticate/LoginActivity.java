@@ -1,4 +1,4 @@
-package com.bird_farm_shop_android;
+package com.bird_farm_shop_android.authenticate;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bird_farm_shop_android.R;
 import com.bird_farm_shop_android.dao.Implements.UserDAO;
 import com.bird_farm_shop_android.dao.Interface.IUserDAO;
 import com.google.android.gms.tasks.OnCompleteListener;

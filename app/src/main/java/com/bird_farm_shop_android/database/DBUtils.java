@@ -1,4 +1,4 @@
-package com.bird_farm_shop_android;
+package com.bird_farm_shop_android.database;
 
 import android.os.StrictMode;
 import android.util.Log;
@@ -10,7 +10,7 @@ public class DBUtils {
     Connection connection;
     public static Connection getConnection() {
         Connection connection = null; // Declare connection here
-        String ip = "10.86.31.130";
+        String ip = "192.168.1.242";
         String port = "1433";
         String db = "BIRD_FARM_SHOP_ANDROID";
         String username = "sa";
