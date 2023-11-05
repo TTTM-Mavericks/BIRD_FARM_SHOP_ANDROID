@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/drawerLayout"
+    android:background="@drawable/layout_2"
     tools:context=".MainActivity">
 
     <LinearLayout
@@ -15,15 +16,15 @@
 
         <include
             layout="@layout/toolbar_admin"/>
-        
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Home"
             android:layout_gravity="center"
             android:layout_marginTop="400dp"
-            android:textColor="@color/lavender"
-            android:textSize="36sp"/>
+            android:text="Home"
+            android:textColor="@color/white"
+            android:textSize="36sp" />
     </LinearLayout>
 
     <RelativeLayout

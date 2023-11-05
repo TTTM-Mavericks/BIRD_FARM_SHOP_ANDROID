@@ -40,11 +40,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/lavender"
-            android:text="Home"
-            android:textSize="20sp"
             android:drawableLeft="@drawable/baseline_home_24"
-            android:drawablePadding="8dp"/>
+            android:drawablePadding="8dp"
+            android:text="Home"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -58,11 +58,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/lavender"
-            android:text="Food Page"
-            android:textSize="20sp"
             android:drawableLeft="@drawable/baseline_settings_24"
-            android:drawablePadding="8dp"/>
+            android:drawablePadding="8dp"
+            android:text="Food Page"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -76,11 +76,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/lavender"
-            android:text="Nest Page"
-            android:textSize="20sp"
             android:drawableLeft="@drawable/baseline_info_24"
-            android:drawablePadding="8dp"/>
+            android:drawablePadding="8dp"
+            android:text="Nest Page"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -94,11 +94,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/lavender"
-            android:text="Bird Page"
-            android:textSize="20sp"
             android:drawableLeft="@drawable/baseline_share_24"
-            android:drawablePadding="8dp"/>
+            android:drawablePadding="8dp"
+            android:text="Bird Page"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
     </LinearLayout>
 
     <View
@@ -118,11 +118,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/lavender"
-            android:text="Logout"
-            android:textSize="20sp"
             android:drawableLeft="@drawable/baseline_exit_to_app_24"
-            android:drawablePadding="8dp"/>
+            android:drawablePadding="8dp"
+            android:text="Logout"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
     </LinearLayout>
 
 </LinearLayout>

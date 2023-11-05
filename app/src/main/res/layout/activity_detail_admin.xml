@@ -6,77 +6,88 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/layout_2"
     tools:context=".bird.BirdDetailActivity">
+
     <TextView
+        android:id="@+id/detailProductNameAdmin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/detailProductNameAdmin"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
         android:text="Product Name"
-        android:layout_marginTop="14dp"
-        android:textSize="24sp"
-        android:layout_gravity="center"
-        android:layout_marginBottom="12dp"
-        android:textColor="@color/lavender"/>
+        android:textColor="@color/white"
+        android:textSize="34sp" />
+
     <ImageView
-        android:layout_width="400dp"
-        android:layout_height="200dp"
         android:id="@+id/detailProductImageAdmin"
+        android:layout_width="400dp"
+        android:layout_height="378dp"
+        android:layout_gravity="center"
         android:padding="8dp"
-        android:layout_gravity="center"
-        android:src="@drawable/uploadimg"
-        android:scaleType="fitXY"/>
+        android:scaleType="fitXY"
+        android:src="@drawable/uploadimg" />
+
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:padding="20dp"
-        android:text="Product Price"
-        android:layout_gravity="center"
         android:id="@+id/detailProductPriceAdmin"
-        android:textSize="18sp"
-        android:textColor="@color/lavender"/>
-    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:padding="20dp"
-        android:text="Product Description"
         android:layout_gravity="center"
-        android:id="@+id/detailProductDecriptionAdmin"
-        android:textSize="18sp"
-        android:textColor="@color/lavender"/>
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="Product Price"
+        android:textColor="@color/white"
+        android:textSize="24sp" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <com.github.clans.fab.FloatingActionMenu
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
-            app:menu_fab_size="normal"
-            android:layout_marginBottom="20dp"
+            android:layout_alignParentBottom="true"
             android:layout_marginEnd="20dp"
-            app:menu_colorPressed="@color/lavender"
-            app:menu_colorNormal="@color/lavender"
+            android:layout_marginBottom="20dp"
+            app:menu_colorNormal="@color/white"
+            app:menu_colorPressed="@color/white"
+            app:menu_fab_size="normal"
             app:menu_icon="@drawable/ic_baseline_format_list_bulleted_24"
             app:menu_openDirection="up"
             app:menu_showShadow="true">
+
             <com.github.clans.fab.FloatingActionButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/Detail_editButtonAdmin"
-                android:src="@drawable/ic_baseline_edit_24"
-                app:fab_showShadow="true"
-                app:fab_colorNormal="@color/green"
-                app:fab_size="mini"/>
-            <com.github.clans.fab.FloatingActionButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/Detail_deleteButtonAdmin"
-                android:src="@drawable/ic_baseline_delete_24"
+                android:src="@drawable/ic_baseline_edit_24"
+                app:fab_colorNormal="@color/teal_200"
                 app:fab_showShadow="true"
+                app:fab_size="mini" />
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/Detail_deleteButtonAdmin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_baseline_delete_24"
                 app:fab_colorNormal="@color/red"
-                app:fab_size="mini"/>
+                app:fab_showShadow="true"
+                app:fab_size="mini" />
         </com.github.clans.fab.FloatingActionMenu>
+
+        <TextView
+            android:id="@+id/detailProductDecriptionAdmin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:padding="40dp"
+            android:text="Product Description"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:gravity="center"/>
     </RelativeLayout>
 </LinearLayout>
