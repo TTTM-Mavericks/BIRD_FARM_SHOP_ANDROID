@@ -10,7 +10,7 @@ public class DBUtils {
     Connection connection;
     public static Connection getConnection() {
         Connection connection = null; // Declare connection here
-        String ip = "192.168.1.242";
+        String ip = "192.168.2.14";
         String port = "1433";
         String db = "BIRD_FARM_SHOP_ANDROID";
         String username = "sa";

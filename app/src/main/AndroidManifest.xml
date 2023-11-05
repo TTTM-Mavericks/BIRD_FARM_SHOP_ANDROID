@@ -18,52 +18,77 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
 
-        <!--  Bird Config  -->
+        <!--  Bird Config Admin Home Page -->
         <activity
-            android:name=".bird.BirdUploadActivity"
+            android:name=".adminHomePage.bird.BirdUploadActivity"
             android:exported="false" />
         <activity
-            android:name=".bird.BirdUpdateActivity"
+            android:name=".adminHomePage.bird.BirdUpdateActivity"
             android:exported="false" />
         <activity
-            android:name=".bird.BirdDetailActivity"
+            android:name=".adminHomePage.bird.BirdDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".bird.BirdActivity"
-            android:exported="false" />
-
-        <!--  Nest Config  -->
-        <activity
-            android:name=".nest.NestActivity"
-            android:exported="false" />
-        <activity
-            android:name=".nest.NestUpdateActivity"
-            android:exported="false" />
-        <activity
-            android:name=".nest.NestDetailActivity"
-            android:exported="false" />
-        <activity
-            android:name=".nest.NestUploadActivity"
+            android:name=".adminHomePage.bird.BirdActivity"
             android:exported="false" />
 
-        <!--  Food Config  -->
+        <!--  Nest Config Admin Home Page -->
         <activity
-            android:name=".food.FoodActivity"
+            android:name=".adminHomePage.nest.NestActivity"
             android:exported="false" />
         <activity
-            android:name=".food.FoodDetailActivity"
+            android:name=".adminHomePage.nest.NestUpdateActivity"
             android:exported="false" />
         <activity
-            android:name=".food.FoodUploadActivity"
+            android:name=".adminHomePage.nest.NestDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".food.FoodUpdateActivity"
+            android:name=".adminHomePage.nest.NestUploadActivity"
+            android:exported="false" />
+
+        <!--  Food Config  Admin Home Page -->
+        <activity
+            android:name=".adminHomePage.food.FoodActivity"
+            android:exported="false" />
+        <activity
+            android:name=".adminHomePage.food.FoodDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".adminHomePage.food.FoodUploadActivity"
+            android:exported="false" />
+        <activity
+            android:name=".adminHomePage.food.FoodUpdateActivity"
+            android:exported="false" />
+
+        <!--  Bird Config Customer Home Page -->
+        <activity
+            android:name=".customerHomePage.bird.BirdActivityCustomer"
+            android:exported="false" />
+        <activity
+            android:name=".customerHomePage.bird.BirdDetailActivityCustomer"
+            android:exported="false" />
+
+        <!--  Nest Config Customer Home Page -->
+        <activity
+            android:name=".customerHomePage.nest.NestActivityCustomer"
+            android:exported="false" />
+        <activity
+            android:name=".customerHomePage.nest.NestDetailActivityCustomer"
+            android:exported="false" />
+
+        <!--  Food Config Customer Home Page -->
+        <activity
+            android:name=".customerHomePage.food.FoodActivityCustomer"
+            android:exported="false" />
+        <activity
+            android:name=".customerHomePage.food.FoodDetailActivityCustomer"
             android:exported="false" />
 
         <!--    Config for Login and Register Activity  -->
         <activity android:name=".authenticate.LoginActivity"/>
         <activity android:name=".authenticate.RegisterActivity"/>
-        <activity android:name=".MainActivityNavigationBar"/>
+        <activity android:name=".adminHomePage.MainActivityNavigationBarAdmin"/>
+        <activity android:name=".customerHomePage.MainActivityNavigationBarCustomer"/>
 
         <activity
             android:name=".MainActivity"
